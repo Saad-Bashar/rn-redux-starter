@@ -1,14 +1,29 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text, View, Button } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { selectMode, toggleMode } from "../store/themeSlice";
+import { RootTabScreenProps } from "../types";
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
-
-export default function TabTwoScreen() {
+export default function TabOneScreen({
+  navigation,
+}: RootTabScreenProps<"TabTwo">) {
+  const dispatch = useDispatch()
+  const theme = useSelector(selectMode)
+  const backgroudColor = theme === 'light' ? '#fff' : '#000'
+  const textColor = theme === 'light' ? '#000' : '#fff'
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabTwoScreen.tsx" />
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: backgroudColor },
+      ]}
+    >
+      <Text style={[styles.title, {color: textColor}]}>Tab Two</Text>
+      <Button
+        title="TOGGLE THEME"
+        onPress={() => {
+          dispatch(toggleMode())
+        }}
+      />
     </View>
   );
 }
@@ -16,16 +31,16 @@ export default function TabTwoScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   separator: {
     marginVertical: 30,
     height: 1,
-    width: '80%',
+    width: "80%",
   },
 });
